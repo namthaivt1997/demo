@@ -37,7 +37,9 @@ type isLogin struct {
 
 
 var (
-	upgrader =  websocket.Upgrader{}
+	upgrader =  websocket.Upgrader{   CheckOrigin: func(r *http.Request) bool {
+		return true
+	},}
 
 )
 
@@ -47,8 +49,8 @@ var broadcast = make(chan Message)           // broadcast channel =
 var user = make(chan string,2)
 
 func hello(c echo.Context) error {
+	ws, err := upgrader.Upgrade( c.Response(), c.Request(), nil, )
 
-	ws, err := upgrader.Upgrade( c.Response(), c.Request(), nil)
 	if err != nil {
 		return err
 	}
@@ -70,15 +72,6 @@ func hello(c echo.Context) error {
 		str := string(msg)
 
 		broadcast <- Message{Message:str}
-		// Write
-		//err = ws.WriteMessage(websocket.TextMessage, []byte(<-user))
-		//if err != nil {
-		//	fmt.Println(err)
-		//}
-		//err = ws.WriteMessage(websocket.TextMessage, []byte(<-user))
-		//if err != nil {
-		//	fmt.Println(err)
-		//}
 
 	}
 	return c.String(http.StatusOK,"")
@@ -97,6 +90,7 @@ func handleMessages() {
 				delete(clients, client)
 			}
 		}
+		fmt.Println("msg in:")
 	}
 }
 
@@ -205,9 +199,14 @@ func main() {
 	r.GET("", restricted)
 
 
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:1323"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
+
 	e.GET("/user",JoinRoom)
 	e.Static("/", "./public")
-	e.GET("/ws", hello)
+	e.GET("/app/ws", hello)
 	go handleMessages()
 
 	e.Logger.Fatal(e.Start(":1323"))

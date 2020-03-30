@@ -28,7 +28,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    ChatroomComponent
+    ChatroomComponent,
+
   ],
   imports: [
     BrowserModule,

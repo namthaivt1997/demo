@@ -1,2 +1,5 @@
-<p>chatroom works!</p>
+<div *ngFor="let m of user.msg">
+  <span>{{m}}</span>
+</div>
 <input [(ngModel)]="msg">
+<button (click)="sendToServer($event)">click</button>
