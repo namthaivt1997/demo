@@ -1,40 +1,56 @@
-import {Component, OnInit} from "@angular/core";
-import {webSocket} from "rxjs/webSocket";
+
+// @ts-ignore
+import {Component, OnInit} from '@angular/core';
+import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
+import {EventbusService} from "../eventbus.service";
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: "app-chatroom",
-  templateUrl: "./chatroom.component.html",
-  styleUrls: ["./chatroom.component.css"],
+  selector: 'app-chatroom',
+  templateUrl: './chatroom.component.html',
+  styleUrls: ['./chatroom.component.css'],
 })
 
 
-type User = {
-  id: string
-  msg: Array<string>
-}
-
-export class ChatroomComponent implements OnInit{
 
 
-  user: User
+export class ChatroomComponent implements OnInit {
 
-  msgold: Array<string> = []
-  msgrecive: string
-  msg: string = ""
-  url = webSocket('ws://localhost:1323/app/ws')
+  constructor( public eventbusService : EventbusService,
+               public cookie : CookieService) {
+
+  }
+
+  user: string;
+  msgnew: string;
+  msg: string[] = [];
+
+  url: any
+
 
   sendToServer($event) {
 
 
-    this.url.next(this.msg)
+    this.url.next(this.user+this.msgnew);
 
-    console.log(this.msgold)
+    console.log(this.msg);
   }
 
   ngOnInit(): void {
-    this.url.subscribe(msg => {console.log('message received: ' + msg)
-      console.log("msg:" +  msg)
-      this.user.msg = this.user.msg.concat(msg.toString())
+    this.eventbusService.listenChange<string>("phu").subscribe(r => {
+      this.user = r
+      console.log('phu', r);
     });
+
+    this.url =  webSocket('ws://localhost:1323/ws');
+
+    this.url.subscribe(msg => {console.log('message received: ' + msg);
+                               console.log('msg:' +  msg);
+                               this.msg.push(msg.toString());
+    });
+
+    this.cookie.set("thai","1111")
+    this.user = this.cookie.get("username")
+    console.log(">>>>>>>>",this.user)
   }
 }

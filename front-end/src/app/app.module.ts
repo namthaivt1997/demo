@@ -6,6 +6,8 @@ import { LoginComponent } from './login/login.component';
 import {FormsModule} from "@angular/forms";
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import {RouterModule, Routes} from "@angular/router";
+import {EventbusService} from "./eventbus.service";
+import {CookieService} from "ngx-cookie-service";
 
 
 const appRoutes: Routes = [
@@ -35,13 +37,12 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     )
   ],
-  providers: [],
+  providers: [EventbusService,CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

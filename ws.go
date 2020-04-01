@@ -27,7 +27,7 @@ type Room struct {
 // jwtCustomClaims are custom claims extending default ones.
 type jwtCustomClaims struct {
 	Name  string `json:"name"`
-	Admin bool   `json:"admin"`
+	Password string   `json:"password"`
 	jwt.StandardClaims
 }
 
@@ -49,6 +49,11 @@ var broadcast = make(chan Message)           // broadcast channel =
 var user = make(chan string,2)
 
 func hello(c echo.Context) error {
+
+	for _, cookie := range c.Cookies() {
+		fmt.Println(cookie.Name)
+		fmt.Println(cookie.Value)
+	}
 	ws, err := upgrader.Upgrade( c.Response(), c.Request(), nil, )
 
 	if err != nil {
@@ -94,28 +99,22 @@ func handleMessages() {
 	}
 }
 
-func JoinRoom(c echo.Context) error {
-	broadcast <- Message{Username:c.QueryParam("username")}
-
-	return c.String(http.StatusOK,"")
-}
 
 func login(c echo.Context) error {
+
+
 	// get data from body
 	data, _ := ioutil.ReadAll(c.Request().Body)
-
 
 	userLogin := db_.User{}
 
 	json.Unmarshal(data,&userLogin)
 
-	fmt.Println(string(data))
-
-
+	fmt.Println("data",string(data))
 
 	db := db_.ConnectDB()
 
-	sqlStatement := "SELECT id, name, password FROM user WHERE id =" + userLogin.Id
+	sqlStatement := "SELECT id, username, password FROM User WHERE id =" + userLogin.Id
 
 	rows, err := db.Query(sqlStatement)
 
@@ -143,14 +142,22 @@ func login(c echo.Context) error {
 	if userLogin.Pw != user.Pw {
 		return echo.ErrUnauthorized
 	}
+	expiration := time.Now().Add(365 * 24 * time.Hour)
+	cookie1    :=    http.Cookie{Name: "username",Value:userLogin.Id,Expires:expiration}
+	http.SetCookie(c.Response(), &cookie1)
 
+	cookie := new(http.Cookie)
+	cookie.Name = "username"
+	cookie.Value = "jon"
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	c.SetCookie(cookie)
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
-	claims["name"] = "Jon Snow"
-	claims["admin"] = true
+	claims["name"] = userLogin.Id
+	claims["password"] = userLogin.Pw
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
 	// Generate encoded token and send it as response.
@@ -178,25 +185,30 @@ func restricted(c echo.Context) error {
 
 
 func main() {
+
+	//userID := db_.User{}
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.POST("/app/login", login)
 
-	// Unauthenticated route
-	e.GET("/app/accessible", accessible)
 
-	// Restricted group
-	r := e.Group("/restricted")
-
+	room := e.Group("/check")
 	// Configure middleware with the custom claims type
 	config := middleware.JWTConfig{
 		Claims:     &jwtCustomClaims{},
 		SigningKey: []byte("secret"),
 	}
-	r.Use(middleware.JWTWithConfig(config))
-	r.GET("", restricted)
+	room.Use(middleware.JWTWithConfig(config))
+
+	e.POST("/app/login", login)
+
+	e.GET("/accessible", accessible)
+
+	// Restricted group
+	e.GET("/restricted",restricted)
+
+
 
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -204,9 +216,7 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 
-	e.GET("/user",JoinRoom)
-	e.Static("/", "./public")
-	e.GET("/app/ws", hello)
+	e.GET("/ws", hello)
 	go handleMessages()
 
 	e.Logger.Fatal(e.Start(":1323"))
