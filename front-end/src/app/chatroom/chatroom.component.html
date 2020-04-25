@@ -2,5 +2,11 @@
   <span>{{m}}</span>
 </div>
 <input [(ngModel)]="msgnew">
-{{id}}
 <button (click)="sendToServer($event)">click</button>
+
+<div>LIST ROOM
+  <div *ngFor="let room of listroom">
+    <button (click)="selectRoom(room)">{{room}}</button>
+  </div>
+
+</div>

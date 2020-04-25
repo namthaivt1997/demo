@@ -23,7 +23,7 @@ type Users struct {
 var con *sql.DB
 
 func ConnectDB() *sql.DB {
-	db, err := sql.Open("mysql", "devteam:*devteam@123@tcp(192.168.11.49)/testing")
+	db, err := sql.Open("mysql", "root:9128617542@tcp(127.0.0.1)/dev")
 	if err != nil {
 		fmt.Println(">>>",err.Error())
 	} else {

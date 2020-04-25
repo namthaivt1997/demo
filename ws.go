@@ -44,41 +44,47 @@ var (
 )
 
 
+
 var clients = make(map[*websocket.Conn]bool) // connected clients
 var broadcast = make(chan Message)           // broadcast channel =
-var user = make(chan string,2)
+var roomid string
+var urlws = make(chan string,2)
 
 func hello(c echo.Context) error {
+	//for _, cookie := range c.Cookies() {
+	//	fmt.Println(cookie.Name)
+	//	fmt.Println(cookie.Value)
+	//}
+		ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil, )
 
-	for _, cookie := range c.Cookies() {
-		fmt.Println(cookie.Name)
-		fmt.Println(cookie.Value)
-	}
-	ws, err := upgrader.Upgrade( c.Response(), c.Request(), nil, )
-
-	if err != nil {
-		return err
-	}
-	defer ws.Close()
-
-	clients[ws] = true
-
-	for {
-
-
-		// Read
-		_, msg, err := ws.ReadMessage()
 		if err != nil {
-			fmt.Println(err)
-			delete(clients, ws)
-			break
+			return err
 		}
-		fmt.Printf("%s\n", msg)
-		str := string(msg)
+		defer ws.Close()
 
-		broadcast <- Message{Message:str}
+		clients[ws] = true
 
-	}
+		for {
+			cookie, err := c.Cookie("username")
+			if err != nil {
+				return err
+			}
+			fmt.Println("cookie", cookie)
+
+			// Reads
+			var msg Message
+			err = ws.ReadJSON(&msg.Message)
+			if err != nil {
+				fmt.Println(err)
+				delete(clients, ws)
+				break
+			}
+			fmt.Printf(">>>>>>>>>%s\n", msg.Message)
+
+			broadcast <- Message{Message: msg.Message}
+
+		}
+
 	return c.String(http.StatusOK,"")
 }
 
@@ -86,9 +92,10 @@ func handleMessages() {
 	for {
 		// Grab the next message from the broadcast channel
 		msg := <-broadcast
+		//fmt.Println("roomid select >>>" , <-roomid)
 		// Send it out to every client that is currently connected
 		for client := range clients {
-			err := client.WriteMessage(websocket.TextMessage, []byte(msg.Username + msg.Message))
+			err := client.WriteJSON(msg.Message+roomid)
 			if err != nil {
 				fmt.Printf("error: %v", err)
 				client.Close()
@@ -114,7 +121,7 @@ func login(c echo.Context) error {
 
 	db := db_.ConnectDB()
 
-	sqlStatement := "SELECT id, username, password FROM User WHERE id =" + userLogin.Id
+	sqlStatement := "SELECT id, name, password FROM User WHERE id =" + userLogin.Id
 
 	rows, err := db.Query(sqlStatement)
 
@@ -172,28 +179,52 @@ func login(c echo.Context) error {
 	})
 }
 
-func accessible(c echo.Context) error {
-	return c.String(http.StatusOK, "Accessible")
+func getListRoom(c echo.Context) error {
+	userID := c.Param("userID")
+	fmt.Println(">>>>>>>>>>>",userID)
+	db := db_.ConnectDB()
+
+	sqlStatement := "SELECT roomid FROM roomuser WHERE userid =" + userID
+
+	rows, err := db.Query(sqlStatement)
+
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusCreated, err);
+	}
+	defer rows.Close()
+
+	listroom := []int{}
+	for rows.Next() {
+		var i int
+		err2 := rows.Scan(&i)
+		fmt.Println(">>>> listroom: ",listroom)
+		// Exit if we get an error
+		if err2 != nil {
+			fmt.Print(err2)
+		}
+		listroom = append(listroom, i)
+	}
+	return c.JSON(http.StatusOK, map[string]ps.Any{
+		"userID": userID,
+		"listroom": listroom,
+	})
 }
 
-func restricted(c echo.Context) error {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	name := claims["name"].(string)
-	return c.String(http.StatusOK, "Welcome "+name+"!")
-}
+func selectRoom(c echo.Context) error {
+		roomid = c.Param("roomid")
 
+	return c.String(http.StatusOK,"ok")
+}
 
 func main() {
-
-	//userID := db_.User{}
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.POST("app/login", login)
 
-
-	room := e.Group("/check")
+	room := e.Group("app/chatroom")
 	// Configure middleware with the custom claims type
 	config := middleware.JWTConfig{
 		Claims:     &jwtCustomClaims{},
@@ -201,23 +232,17 @@ func main() {
 	}
 	room.Use(middleware.JWTWithConfig(config))
 
-	e.POST("/app/login", login)
-
-	e.GET("/accessible", accessible)
-
-	// Restricted group
-	e.GET("/restricted",restricted)
 
 
-
-
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	room.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:1323"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 
-	e.GET("/ws", hello)
-	go handleMessages()
+	e.GET("app/chatroom/listroom/:userID",getListRoom)
+	e.GET("app/chatroom/selectroom/:roomid",selectRoom)
 
+	e.GET("/a/ws", hello)
+	go handleMessages()
 	e.Logger.Fatal(e.Start(":1323"))
 }

@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02f28e4e-22dd-4c9d-ad1b-6f5ad92577db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/myarray.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DB/connectDB.go" beforeDir="false" afterPath="$PROJECT_DIR$/DB/connectDB.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/app.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/login/login.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/proxy.conf.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/proxy.conf.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ws.go" beforeDir="false" afterPath="$PROJECT_DIR$/ws.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +19,14 @@
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
   </component>
-  <component name="GOROOT" path="C:\Users\brian.intern\go\go1.14.1" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -63,7 +65,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="go.sdk" />
-    <property name="ts.external.directory.path" value="C:\Users\brian.intern\AppData\Local\JetBrains\IntelliJ IDEA 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="C:\Go\bin\src\demo\front-end\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -117,15 +119,27 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/front-end/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Go Build.go build connectDB.go" />
       <item itemvalue="Go Build.go build connectDB.go (1)" />
       <item itemvalue="Go Build.go build demo" />
       <item itemvalue="Go Build.go build ws.go" />
+      <item itemvalue="npm.start" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build ws.go" />
+        <item itemvalue="npm.start" />
         <item itemvalue="Go Build.go build demo" />
         <item itemvalue="Go Build.go build connectDB.go (1)" />
         <item itemvalue="Go Build.go build connectDB.go" />
@@ -159,6 +173,9 @@
       <workItem from="1585640621756" duration="426000" />
       <workItem from="1585641144869" duration="2552000" />
       <workItem from="1585708731272" duration="20678000" />
+      <workItem from="1585831715260" duration="13930000" />
+      <workItem from="1587450072225" duration="13419000" />
+      <workItem from="1587616986691" duration="18817000" />
     </task>
     <servers />
   </component>
@@ -166,14 +183,19 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="552" y="182" key="#GOROOT" timestamp="1585716077912">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="393" y="62" key="#GOROOT" timestamp="1585831792851">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state x="393" y="62" key="#GOROOT/0.0.1366.738@0.0.1366.738" timestamp="1585831792851" />
     <state x="552" y="182" key="#GOROOT/0.0.1920.1040@0.0.1920.1040" timestamp="1585716077912" />
     <state x="552" y="182" key="#Go_Modules_(vgo)" timestamp="1585722300051">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="182" key="#Go_Modules_(vgo)/0.0.1920.1040@0.0.1920.1040" timestamp="1585722300051" />
+    <state x="275" y="31" key="#Inspections" timestamp="1586086262093">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="275" y="31" key="#Inspections/0.0.1366.738@0.0.1366.738" timestamp="1586086262093" />
     <state x="552" y="182" key="#TSLint" timestamp="1585711532600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -182,6 +204,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585722532162" />
+    <state x="488" y="88" key="#com.intellij.ide.util.MemberChooser" timestamp="1587461191380">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="488" y="88" key="#com.intellij.ide.util.MemberChooser/0.0.1366.738@0.0.1366.738" timestamp="1587461191380" />
     <state x="686" y="185" key="#go_build_connectDB.go_(1)" timestamp="1585721718048">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -194,45 +220,54 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1585722203692" />
-    <state width="938" height="282" key="GridCell.Tab.0.bottom" timestamp="1585737952387">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="182" key="GridCell.Tab.0.bottom" timestamp="1587783388771">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="182" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1587783388771" />
     <state width="938" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952387" />
-    <state width="938" height="282" key="GridCell.Tab.0.center" timestamp="1585737952387">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="182" key="GridCell.Tab.0.center" timestamp="1587783388770">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="182" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1587783388770" />
     <state width="938" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952387" />
-    <state width="938" height="282" key="GridCell.Tab.0.left" timestamp="1585737952387">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="182" key="GridCell.Tab.0.left" timestamp="1587783388762">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="182" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1587783388762" />
     <state width="938" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952387" />
-    <state width="938" height="282" key="GridCell.Tab.0.right" timestamp="1585737952387">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="182" key="GridCell.Tab.0.right" timestamp="1587783388770">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="182" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1587783388770" />
     <state width="938" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952387" />
-    <state width="1128" height="348" key="GridCell.Tab.1.bottom" timestamp="1585737952379">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="208" key="GridCell.Tab.1.bottom" timestamp="1586183901852">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="208" key="GridCell.Tab.1.bottom/0.0.1366.738@0.0.1366.738" timestamp="1586183901852" />
     <state width="1128" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952379" />
-    <state width="1128" height="348" key="GridCell.Tab.1.center" timestamp="1585737952379">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="208" key="GridCell.Tab.1.center" timestamp="1586183901852">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="208" key="GridCell.Tab.1.center/0.0.1366.738@0.0.1366.738" timestamp="1586183901852" />
     <state width="1128" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952379" />
-    <state width="1128" height="348" key="GridCell.Tab.1.left" timestamp="1585737952379">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="208" key="GridCell.Tab.1.left" timestamp="1586183901852">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="208" key="GridCell.Tab.1.left/0.0.1366.738@0.0.1366.738" timestamp="1586183901852" />
     <state width="1128" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952379" />
-    <state width="1128" height="348" key="GridCell.Tab.1.right" timestamp="1585737952379">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1323" height="208" key="GridCell.Tab.1.right" timestamp="1586183901852">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state width="1323" height="208" key="GridCell.Tab.1.right/0.0.1366.738@0.0.1366.738" timestamp="1586183901852" />
     <state width="1128" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1585737952379" />
     <state x="463" y="166" key="SettingsEditor" timestamp="1585722858377">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="166" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1585722858377" />
-    <state x="667" y="348" key="com.intellij.ide.util.TipDialog" timestamp="1585641146581">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="475" y="247" key="com.intellij.ide.util.TipDialog" timestamp="1587617128232">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
+    <state x="475" y="247" key="com.intellij.ide.util.TipDialog/0.0.1366.738@0.0.1366.738" timestamp="1587617128232" />
     <state x="667" y="348" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585641146581" />
     <state x="667" y="276" width="585" height="488" key="find.popup" timestamp="1585733830437">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -242,5 +277,20 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="342" y="228" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1585722800764" />
+    <state x="339" y="165" key="run.anything.popup" timestamp="1587645250391">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="339" y="165" key="run.anything.popup/0.0.1366.738@0.0.1366.738" timestamp="1587645250391" />
+    <state x="346" y="59" key="search.everywhere.popup" timestamp="1587747241781">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="346" y="59" key="search.everywhere.popup/0.0.1366.738@0.0.1366.738" timestamp="1587747241781" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="DlvErrorBreakpoint" />
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

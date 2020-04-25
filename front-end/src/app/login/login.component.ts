@@ -6,6 +6,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {UserserviceService} from "../userservice.service";
 import {EventbusService} from "../eventbus.service";
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
@@ -31,24 +32,31 @@ export class LoginComponent implements OnInit {
   constructor(private http: HttpClient,
               private router: Router,
               public userService: UserserviceService,
-              public eventBusService: EventbusService) { }
+              public eventBusService: EventbusService,
+              public cookie : CookieService) { }
 
   ngOnInit() {
 
   }
 
   login() {
-    this.eventBusService.pushChange('phu',this.id)
+
     this.userService.login(this.id,this.pw).subscribe(
       data =>{
         this.token = data.token
         this.islogin = data.isLogin
         if (this.islogin === true) {
-
+          this.eventBusService.pushChange('phu',this.token)
+          this.cookie.set("username",this.id)
+          console.log("token::::::::::::" + this.token)
           this.router.navigate(['/chatroom']);
         }
       }
     )
+
+  }
+
+  setLocalStorage(x  ,_y: string){
 
   }
 }
