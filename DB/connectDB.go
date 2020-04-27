@@ -3,12 +3,9 @@ package DB
 import (
 "database/sql"
 "fmt"
-_ "github.com/go-sql-driver/mysql"
 "github.com/labstack/echo"
 "github.com/labstack/echo/middleware"
-_"go/doc"
 "net/http"
-//_"encoding/json"
 )
 type User struct {
 	Id     string `json:"id"`

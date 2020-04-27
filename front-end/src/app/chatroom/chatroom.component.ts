@@ -6,6 +6,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {myarray} from "./myarray";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {usermsg} from "./usermsg";
 
 @Component({
   selector: 'app-chatroom',
@@ -20,15 +21,11 @@ import {Router} from "@angular/router";
 
 
 export class ChatroomComponent implements OnInit {
-  isLogin: boolean = false
-  array: myarray[]
+  useronline: myarray[] = []
   token: string
-  user: string;
   msgnew: string;
-  msg: string[] = [];
+  msg: usermsg[] = [];
   url: any
-  listroom = []
-  select : any
 
   constructor(public eventbusService: EventbusService,
               public cookie: CookieService,
@@ -37,43 +34,50 @@ export class ChatroomComponent implements OnInit {
   }
 
 
+
+
   getToken(){
-    this.eventbusService.listenChange<string>("phu").subscribe(r => {
-      this.token = r
-      this.http.get("app/chatroom",{'headers': new HttpHeaders()
-          .set('Authorization', 'Bearer ' + this.token)}
-
-      ).subscribe(data => {
-
-      },error => {
-        this.router.navigate(['/']);
-        console.log(error)
+      this.eventbusService.listenChange<string>("phu").subscribe(r => {
+        this.token = r
       });
-
-    });
 
 
 
   }
   sendToServer($event) {
-    console.log("msg send to server: " + this.user + this.msgnew + this.select)
-    this.url.next(this.user + this.msgnew + this.select);
+    this.url.next(this.msgnew );
   }
 
   ngOnInit(): void {
+    var t = this.eventbusService.t
+    console.log("tttttttttt",t)
     this.getToken()
-    this.url = webSocket({url:'ws://localhost:1323/a/ws',
-      // protocol: ['Authorization', 'Bearer ' + this.token]
+    this.http.get("/app/chatroom/", {
+        'headers': new HttpHeaders()
+          .set('Authorization', 'Bearer ' + t)
+      }
+    ).subscribe(data => {
+      data.usersonline.forEach(r => {
+        this.useronline.push(r)
+      })
+      console.log("???????????",this.useronline)
+    }, error => {
+      this.router.navigate(['/']);
+      console.log(error)
     });
-
-    this.user = this.cookie.get("username")
+    this.url = webSocket({url:'ws://localhost:1323/ws',
+       //protocol: ['Authorization', 'Bearer ' + this.token]
+    });
     console.log(">>>>>>>>", this.token)
-    this.getlistroom()
-    this.url.subscribe(msg => {
-      console.log('message received: ' + msg);
-      console.log('msg:' + msg);
+    //this.getlistroom()
 
-      this.msg.push(msg.toString());
+    this.url.subscribe(msg => {
+      msg = msg.split(":",2)
+      console.log("arr msg",msg)
+      this.msg.push({
+        user : msg[0].toString(),
+        msg : msg[1].toString()
+      });
       //this.array.push({id:this.user,msg:msg})
     }, error => {
       console.log(error);
@@ -81,26 +85,26 @@ export class ChatroomComponent implements OnInit {
   }
 
 
-  getlistroom() {
-    this.http.get("app/chatroom/listroom/"+this.user,{'headers': new HttpHeaders()
-        .set('Authorization', 'Bearer ' + this.token)}
-
-    ).subscribe(data => {
-
-      this.listroom = data.listroom
-      console.log(this.listroom)
-    },error => {
-    });
-  }
-
-  selectRoom(room: any) {
-    this.select = room
-    this.http.get("app/chatroom/selectroom/"+room,{'headers': new HttpHeaders()
-        .set('Authorization', 'Bearer ' + this.token)}
-
-    ).subscribe(data => {
-
-    },error => {
-    });
-  }
+  // getlistroom() {
+  //   this.http.get("app/chatroom/listroom/"+this.user,{'headers': new HttpHeaders()
+  //       .set('Authorization', 'Bearer ' + this.token)}
+  //
+  //   ).subscribe(data => {
+  //
+  //     this.listroom = data.listroom
+  //     console.log(this.listroom)
+  //   },error => {
+  //   });
+  // }
+  //
+  // selectRoom(room: any) {
+  //   this.select = room
+  //   this.http.get("app/chatroom/selectroom/"+room,{'headers': new HttpHeaders()
+  //       .set('Authorization', 'Bearer ' + this.token)}
+  //
+  //   ).subscribe(data => {
+  //
+  //   },error => {
+  //   });
+  // }
 }

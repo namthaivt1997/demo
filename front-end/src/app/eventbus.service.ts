@@ -4,6 +4,7 @@ import {Subject} from "rxjs";
 @Injectable()
 export class EventbusService {
 
+  t : any
   private events: Map<String, EventEmitter<any>> = new Map<String, EventEmitter<any>>();
 
   constructor() {

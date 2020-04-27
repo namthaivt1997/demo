@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
   pw: string;
   islogin = true;
   token: string;
-
   constructor(private http: HttpClient,
               private router: Router,
               public userService: UserserviceService,
@@ -46,13 +45,16 @@ export class LoginComponent implements OnInit {
         this.token = data.token
         this.islogin = data.isLogin
         if (this.islogin === true) {
+          this.eventBusService.t = this.token
           this.eventBusService.pushChange('phu',this.token)
           this.cookie.set("username",this.id)
-          console.log("token::::::::::::" + this.token)
           this.router.navigate(['/chatroom']);
         }
+      },error => {
+        console.log(error)
       }
     )
+
 
   }
 

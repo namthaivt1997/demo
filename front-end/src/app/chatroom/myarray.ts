@@ -1,5 +1,5 @@
 
 export interface myarray {
-  id: string;
-  msg: string;
+  listonline: string;
+  timeonline: string;
 }

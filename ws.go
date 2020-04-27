@@ -19,10 +19,10 @@ type Message struct {
 	Message  string `json:"message"`
 }
 
-type Room struct {
-	Id string `json:"id"`
-	Status string `json:"status"`
-}
+//type Room struct {
+//	Id string `json:"id"`
+//	Status string `json:"status"`
+//}
 
 // jwtCustomClaims are custom claims extending default ones.
 type jwtCustomClaims struct {
@@ -32,40 +32,41 @@ type jwtCustomClaims struct {
 }
 
 type isLogin struct {
-	isLogin bool `json:"isLogin"`
+	IsLogin bool `json:"isLogin"`
 }
 
+type usersOnline struct {
+	Listonline string `json:"listonline"`
+	Timeonline string `json:"timeonline"`
+}
 
+// config origin cho ws
 var (
 	upgrader =  websocket.Upgrader{   CheckOrigin: func(r *http.Request) bool {
 		return true
 	},}
 
 )
-
-
-
+//tạo 1 map clinets có key là ws và value là bool
 var clients = make(map[*websocket.Conn]bool) // connected clients
-var broadcast = make(chan Message)           // broadcast channel =
-var roomid string
-var urlws = make(chan string,2)
+// tọa 1 broadcast chanel hứng msg
+var broadcast = make(chan Message)           // broadcast channel
 
+var usersonline  []usersOnline
+var cookie *http.Cookie
 func hello(c echo.Context) error {
 	//for _, cookie := range c.Cookies() {
 	//	fmt.Println(cookie.Name)
 	//	fmt.Println(cookie.Value)
 	//}
 		ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil, )
-
 		if err != nil {
 			return err
 		}
 		defer ws.Close()
-
 		clients[ws] = true
-
 		for {
-			cookie, err := c.Cookie("username")
+			cookie, err = c.Cookie("username")
 			if err != nil {
 				return err
 			}
@@ -81,6 +82,7 @@ func hello(c echo.Context) error {
 			}
 			fmt.Printf(">>>>>>>>>%s\n", msg.Message)
 
+			// send msg to broadcast
 			broadcast <- Message{Message: msg.Message}
 
 		}
@@ -90,12 +92,14 @@ func hello(c echo.Context) error {
 
 func handleMessages() {
 	for {
-		// Grab the next message from the broadcast channel
+		// get msg from broadcast
+
 		msg := <-broadcast
 		//fmt.Println("roomid select >>>" , <-roomid)
 		// Send it out to every client that is currently connected
 		for client := range clients {
-			err := client.WriteJSON(msg.Message+roomid)
+			err := client.WriteJSON( cookie.Value + ":" + msg.Message)
+			fmt.Println("số clients:::" , clients)
 			if err != nil {
 				fmt.Printf("error: %v", err)
 				client.Close()
@@ -153,11 +157,11 @@ func login(c echo.Context) error {
 	cookie1    :=    http.Cookie{Name: "username",Value:userLogin.Id,Expires:expiration}
 	http.SetCookie(c.Response(), &cookie1)
 
-	cookie := new(http.Cookie)
-	cookie.Name = "username"
-	cookie.Value = "jon"
-	cookie.Expires = time.Now().Add(24 * time.Hour)
-	c.SetCookie(cookie)
+	//cookie := new(http.Cookie)
+	//cookie.Name = "username"
+	//cookie.Value = user.Id
+	//cookie.Expires = time.Now().Add(24 * time.Hour)
+	//c.SetCookie(cookie)
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 
@@ -172,50 +176,63 @@ func login(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	onl := usersOnline{
+		Listonline: user.Id ,
+		Timeonline: time.Now().String(),
+	}
+	usersonline = append(usersonline,onl)
 
+	fmt.Println("oooooooooooo",usersonline)
 	return c.JSON(http.StatusOK, map[string]ps.Any{
 		"token": t,
 		"isLogin": true,
 	})
 }
 
-func getListRoom(c echo.Context) error {
-	userID := c.Param("userID")
-	fmt.Println(">>>>>>>>>>>",userID)
-	db := db_.ConnectDB()
+func getdata(c echo.Context) error {
 
-	sqlStatement := "SELECT roomid FROM roomuser WHERE userid =" + userID
-
-	rows, err := db.Query(sqlStatement)
-
-	if err != nil {
-		fmt.Println(err)
-		return c.JSON(http.StatusCreated, err);
-	}
-	defer rows.Close()
-
-	listroom := []int{}
-	for rows.Next() {
-		var i int
-		err2 := rows.Scan(&i)
-		fmt.Println(">>>> listroom: ",listroom)
-		// Exit if we get an error
-		if err2 != nil {
-			fmt.Print(err2)
-		}
-		listroom = append(listroom, i)
-	}
-	return c.JSON(http.StatusOK, map[string]ps.Any{
-		"userID": userID,
-		"listroom": listroom,
+	return c.JSON(http.StatusOK, map[string][]usersOnline{
+		"usersonline": usersonline,
 	})
 }
 
-func selectRoom(c echo.Context) error {
-		roomid = c.Param("roomid")
+//func getListRoom(c echo.Context) error {
+//	userID := c.Param("userID")
+//	fmt.Println(">>>>>>>>>>>",userID)
+//	db := db_.ConnectDB()
+//
+//	sqlStatement := "SELECT roomid FROM roomuser WHERE userid =" + userID
+//
+//	rows, err := db.Query(sqlStatement)
+//
+//	if err != nil {
+//		fmt.Println(err)
+//		return c.JSON(http.StatusCreated, err);
+//	}
+//	defer rows.Close()
+//
+//	listroom := []int{}
+//	for rows.Next() {
+//		var i int
+//		err2 := rows.Scan(&i)
+//		fmt.Println(">>>> listroom: ",listroom)
+//		// Exit if we get an error
+//		if err2 != nil {
+//			fmt.Print(err2)
+//		}
+//		listroom = append(listroom, i)
+//	}
+//	return c.JSON(http.StatusOK, map[string]ps.Any{
+//		"userID": userID,
+//		"listroom": listroom,
+//	})
+//}
 
-	return c.String(http.StatusOK,"ok")
-}
+//func selectRoom(c echo.Context) error {
+//		roomid = c.Param("roomid")
+//
+//	return c.String(http.StatusOK,"ok")
+//}
 
 func main() {
 	e := echo.New()
@@ -239,10 +256,10 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 
-	e.GET("app/chatroom/listroom/:userID",getListRoom)
-	e.GET("app/chatroom/selectroom/:roomid",selectRoom)
-
-	e.GET("/a/ws", hello)
+	//e.GET("app/chatroom/listroom/:userID",getListRoom)
+	//e.GET("app/chatroom/selectroom/:roomid",selectRoom)
+	room.GET("/",getdata)
+	e.GET("/ws", hello)
 	go handleMessages()
 	e.Logger.Fatal(e.Start(":1323"))
 }
