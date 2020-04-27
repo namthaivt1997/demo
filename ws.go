@@ -64,6 +64,7 @@ func hello(c echo.Context) error {
 			return err
 		}
 		defer ws.Close()
+		// bỏ vô map clients key ws 1 vs value bằng true
 		clients[ws] = true
 		for {
 			cookie, err = c.Cookie("username")
@@ -96,7 +97,7 @@ func handleMessages() {
 
 		msg := <-broadcast
 		//fmt.Println("roomid select >>>" , <-roomid)
-		// Send it out to every client that is currently connected
+		// gửi tất cả những client connected
 		for client := range clients {
 			err := client.WriteJSON( cookie.Value + ":" + msg.Message)
 			fmt.Println("số clients:::" , clients)
@@ -260,6 +261,7 @@ func main() {
 	//e.GET("app/chatroom/selectroom/:roomid",selectRoom)
 	room.GET("/",getdata)
 	e.GET("/ws", hello)
+	// wait msg từ hello
 	go handleMessages()
 	e.Logger.Fatal(e.Start(":1323"))
 }

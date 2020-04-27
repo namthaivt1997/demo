@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02f28e4e-22dd-4c9d-ad1b-6f5ad92577db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/usermsg.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/chat.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/server.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DB/connectDB.go" beforeDir="false" afterPath="$PROJECT_DIR$/DB/connectDB.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/chatroom.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/chatroom/myarray.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/chatroom/myarray.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/eventbus.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/eventbus.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/login/login.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ws.go" beforeDir="false" afterPath="$PROJECT_DIR$/ws.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -183,7 +171,7 @@
       <workItem from="1585708731272" duration="20678000" />
       <workItem from="1585831715260" duration="13930000" />
       <workItem from="1587450072225" duration="13419000" />
-      <workItem from="1587616986691" duration="55487000" />
+      <workItem from="1587616986691" duration="56206000" />
     </task>
     <servers />
   </component>
