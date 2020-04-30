@@ -23,7 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^6.0.1",
     "@stomp/stompjs": "^5.4.4",
     "@types/sockjs-client": "^1.1.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ngx-cookie-service": "^3.0.3",
     "rxjs": "^6.4.0",
     "sockjs-client": "^1.4.0",
